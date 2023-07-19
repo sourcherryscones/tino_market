@@ -2,6 +2,7 @@ from flask import Flask, request, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 app = Flask(__name__)
 app.secret_key = "socrates"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:p9adm1n!@localhost:5432/tino_market_db'
@@ -87,6 +88,19 @@ def updatebook(id):
     tbu.description = jfather['description']
     tbu.posted_by = jfather['posted_by']
     tbu.is_claimed = jfather['is_claimed']
+    tbu.condition = jfather['condition']
+    db.session.commit()
+    return f'{tbu.title} was successfully updated!'   
+
+@app.route('/claim/<int:id>', methods=['PUT'])
+def claimbook(id):
+    tbu = Post.query.filter_by(id=id).first()
+    jfather = request.json
+    tbu.title = jfather['title']
+    tbu.description = jfather['description']
+    tbu.posted_by = jfather['posted_by']
+    tbu.is_claimed = True
+    tbu.recipient_id = 1
     tbu.condition = jfather['condition']
     db.session.commit()
     return f'{tbu.title} was successfully updated!'    

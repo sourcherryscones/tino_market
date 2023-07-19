@@ -1,5 +1,6 @@
 <script>
 	let dflt = [{'id': 4, 'title': 'The Greatest of Gatsbies', 'description': 'Genuinely wonder what this book is about sometimes'}];
+	let showButton = true;
 	import Feed from './Feed.svelte'
 
 	function getBooks(){
@@ -10,6 +11,7 @@
 			dflt=data;
 		}
 		));
+		showButton = false;
 	}
 
 </script>
@@ -19,8 +21,10 @@
 	<p>search for items below :D</p>
 	<Feed postdict={dflt}></Feed>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-	<button on:click={getBooks}>Load books!</button>
-</main>
+	{#if showButton==true}
+		<button on:click={getBooks}>Load books!</button>
+	{/if}
+	</main>
 
 <style>
 	main{
