@@ -11,9 +11,12 @@
                 'Content-Type': 'application/json'
             }
         }).then(resp => {
-            bk['is_claimed'] = true;
-            postdict=postdict;
-        });
+            console.log(resp.json().then(data => {
+                bk['is_claimed'] = data['is_claimed']
+                bk['recip'] = data['recip']
+                postdict=postdict
+            }));
+    });
     }
 </script>
 
@@ -24,7 +27,11 @@
     <div id = "card">
         <h1>{book['title']}</h1>
         <h3>{book['description']}</h3>
+        <h4>Posted by {book['donor']}</h4>
         <button disabled = {book['is_claimed']} on:click={claimItem(book)}>i want this!</button>
+        {#if book['is_claimed'] == true}
+            <h4>claimed by {book['recip']}</h4>
+        {/if}
     </div>
     {/each}
     </div>

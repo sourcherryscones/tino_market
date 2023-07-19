@@ -9,6 +9,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:p9adm1n!@localhos
 
 db = SQLAlchemy(app)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    username = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+    validation = db.Column(db.String(50))
+    grade = db.Column(db.Integer)
+
+    def asdict(self):
+        return {'id': self.id, 'username': self.username, 'grade': self.grade, 'validation': self.validation}
 
 
 # Post model
@@ -17,15 +26,25 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(300))
-    posted_by = db.Column(db.Integer) # db.ForeignKey(users.id)
+    posted_by = db.Column(db.Integer, db.ForeignKey(User.id)) # db.ForeignKey(users.id)
     date_posted = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    recipient_id = db.Column(db.Integer)
+    recipient_id = db.Column(db.Integer, db.ForeignKey(User.id))
     is_claimed = db.Column(db.Boolean, nullable=False)
     condition = db.Column(db.String(4), nullable=False)
+
+    donor = relationship('User', foreign_keys='Post.posted_by')
+    recip = relationship('User', foreign_keys='Post.recipient_id')
     
+
+
     def asdict(self):
-        return {'id': self.id, 'title': self.title, 'description': self.description, 'posted_by': self.posted_by, 'date_posted': str(self.date_posted), 'recipient_id': self.recipient_id, 'is_claimed': self.is_claimed, 'condition': self.condition}
-    
+        base = {'id': self.id, 'title': self.title, 'description': self.description, 'posted_by': self.posted_by, 'date_posted': str(self.date_posted), 'recipient_id': self.recipient_id, 'is_claimed': self.is_claimed, 'condition': self.condition}
+        if (self.donor != None):
+            base['donor'] = self.donor.username
+        if (self.recip != None):
+            base['recip'] = self.recip.username
+        return base
+
     def addmultiple():
         books = [
         {
@@ -51,16 +70,6 @@ class Post(db.Model):
             bdict = Post(title=b['title'],description=b['description'], posted_by=0, recipient_id=1, is_claimed=b['is_claimed'], condition=b['condition'])
             db.session.add(bdict)
         db.session.commit()
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    username = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    validation = db.Column(db.String(50))
-    grade = db.Column(db.Integer)
-
-    def asdict(self):
-        return {'id': self.id, 'username': self.username, 'password': self.password, 'grade': self.grade, 'validation': self.validation}
 
 
 @app.route('/postsquared', methods=['POST'])
@@ -90,7 +99,8 @@ def updatebook(id):
     tbu.is_claimed = jfather['is_claimed']
     tbu.condition = jfather['condition']
     db.session.commit()
-    return f'{tbu.title} was successfully updated!'   
+    db.session.refresh(tbu)
+    return tbu.asdict()
 
 @app.route('/claim/<int:id>', methods=['PUT'])
 def claimbook(id):
@@ -103,7 +113,9 @@ def claimbook(id):
     tbu.recipient_id = 1
     tbu.condition = jfather['condition']
     db.session.commit()
-    return f'{tbu.title} was successfully updated!'    
+    db.session.refresh(tbu)
+    print(tbu.asdict())
+    return tbu.asdict()
     
 
 
