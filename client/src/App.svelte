@@ -2,6 +2,8 @@
 	let dflt = [{'id': 4, 'title': 'The Greatest of Gatsbies', 'description': 'Genuinely wonder what this book is about sometimes'}];
 	let showButton = true;
 	import Feed from './Feed.svelte'
+	import FeedCopy from './FeedCopy.svelte'
+	import AltFeed from './AltFeed.svelte'
 
 	function getBooks(){
 		fetch("./allposts")
@@ -19,11 +21,13 @@
 <main>
 	<h1>tino exchange.</h1>
 	<p>search for items below :D</p>
-	<Feed postdict={dflt}></Feed>
+	<FeedCopy postdict={dflt}/>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 	{#if showButton==true}
 		<button on:click={getBooks}>Load books!</button>
 	{/if}
+
+	<AltFeed/>
 	</main>
 
 <style>
@@ -34,7 +38,13 @@
 		color: #ff3e00;
 		text-transform: lowercase;
 		font-size: 4em;
-		font-weight: 800;
+		font-weight: 900;
+		font-family: 'JetBrains Mono', monospace;
+		text-transform: uppercase;
+	}
+	
+	body{
+		font-family: 'Barlow', sans-serif;
 	}
 
 </style>

@@ -1,7 +1,7 @@
 <script>
     export let postdict = [];
     //[{'id': 8, 'title': 'The Great Gatsby', 'description': 'Stolen from an ALH classroom', 'condition': 'TRAUMATIZED'}]
-
+    //import OldCard from './OldCard.svelte';
     function claimItem(bk){
         console.log('the id of this item is ' + bk['id']);
         const resp = fetch('./claim/' + bk['id'], {
@@ -24,7 +24,8 @@
 <main> <!--hi-->
     <div class="container">
     {#each postdict as book}
-    <div id = "card">
+    <!--<OldCard bookitem={book} title={book['title']} description={book['description']} donor={book['donor']} claimed={book['is_claimed']} />-->
+    <div class = "card">
         <h1>{book['title']}</h1>
         <h3>{book['description']}</h3>
         <h4>Posted by {book['donor']}</h4>
@@ -43,11 +44,14 @@
         grid-template-columns: 2;
     }
 
-    #card{
-        background-color: #197288;
-        color:#fff;
+    .card{
+        color:#27214D;
         border-radius:20px;
         padding: 10px;
         margin: 20px 0px;
+    }
+
+    .card h1{
+        font-family: 'JetBrains Mono', monospace;
     }
 </style>
