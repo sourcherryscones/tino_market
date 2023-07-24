@@ -1,4 +1,4 @@
-<script>
+<!--<script>
     export let postdict = [];
     //[{'id': 8, 'title': 'The Great Gatsby', 'description': 'Stolen from an ALH classroom', 'condition': 'TRAUMATIZED'}]
     //import OldCard from './OldCard.svelte';
@@ -21,10 +21,10 @@
 </script>
 
 
-<main> <!--hi-->
+<main>
     <div class="container">
     {#each postdict as book}
-    <!--<OldCard bookitem={book} title={book['title']} description={book['description']} donor={book['donor']} claimed={book['is_claimed']} />-->
+    <OldCard bookitem={book} title={book['title']} description={book['description']} donor={book['donor']} claimed={book['is_claimed']} />
     <div class = "card">
         <h1>{book['title']}</h1>
         <h3>{book['description']}</h3>
@@ -54,4 +54,4 @@
     .card h1{
         font-family: 'JetBrains Mono', monospace;
     }
-</style>
+</style>-->

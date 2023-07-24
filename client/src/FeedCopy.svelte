@@ -1,24 +1,7 @@
 <script>
     export let postdict = [];
     //[{'id': 8, 'title': 'The Great Gatsby', 'description': 'Stolen from an ALH classroom', 'condition': 'TRAUMATIZED'}]
-    import Card from './Card.svelte';
-
-    function claimItem(bk){
-        console.log('the id of this item is ' + bk['id']);
-        const resp = fetch('./claim/' + bk['id'], {
-            method: 'PUT',
-            body: JSON.stringify(bk),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(resp => {
-            console.log(resp.json().then(data => {
-                bk['is_claimed'] = data['is_claimed']
-                bk['recip'] = data['recip']
-                postdict=postdict
-            }));
-    });
-    }
+    import NewCard from './NewCard.svelte';
 </script>
 
 
@@ -31,7 +14,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     </head>
     {#each postdict as book}
-    <Card bookitem={book} title={book['title']} description={book['description']} donor={book['donor']} claimed={book['is_claimed']} />
+    <NewCard book={book} />
     <!--<div class = "card">
         <h1>{book['title']}</h1>
         <p>{book['description']}</p>

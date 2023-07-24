@@ -1,9 +1,9 @@
 <script>
-	let dflt = [{'id': 4, 'title': 'The Greatest of Gatsbies', 'description': 'Genuinely wonder what this book is about sometimes'}];
+	let dflt = [{'id': 4, 'title': 'The Greatest of Gatsbies', 'description': 'Genuinely wonder what this book is about sometimes', 'posted_by': 1, 'is_claimed': false}];
 	let showButton = true;
 	import Feed from './Feed.svelte'
 	import FeedCopy from './FeedCopy.svelte'
-	import AltFeed from './AltFeed.svelte'
+	//import AltFeed from './AltFeed.svelte'
 
 	function getBooks(){
 		fetch("./allposts")
@@ -27,7 +27,7 @@
 		<button on:click={getBooks}>Load books!</button>
 	{/if}
 
-	<AltFeed/>
+	<!--<AltFeed/>-->
 	</main>
 
 <style>
