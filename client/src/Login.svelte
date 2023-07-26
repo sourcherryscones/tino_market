@@ -1,6 +1,4 @@
 <script>
-    //[{'id': 8, 'title': 'The Great Gatsby', 'description': 'Stolen from an ALH classroom', 'condition': 'TRAUMATIZED'}]
-
     export let es = '';
     export let pes = '';
     export let indicator=false;
@@ -21,14 +19,12 @@
             } else{
                 showHint=true;
             }
-            //console.log("RES SUCCESS IS " + res['success']);
-            //console.log("TYPE IS " + typeof(res['success']));
         }));
     }
 </script>
 
 
-<main> <!--hi-->
+<main>
     <head>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -68,48 +64,6 @@
 			min-height: auto;
 		}
 	}
-
-    .card{
-        color:#27214D;
-        border-radius:20px;
-        padding: 10px;
-        margin: 0px;
-        border: 2px solid;
-        font-family: 'Barlow', sans-serif;
-    }
-
-    .card h1{
-        font-family: 'JetBrains Mono', monospace;
-        /*background-color: rgb(77, 148, 162);*/
-    }
-
-    .card p{
-        min-height: 20px;
-    }
-
-    button{
-        background-color: #FFF2E7;
-        color:#f08626;
-        border-radius: 100px;
-        font-size: 30px;
-        font-weight: 700;
-        height:40px;
-        padding:0px 40px;
-        transition:0.4s;
-    }
-
-    button:hover{
-        background-color: rgb(255, 209, 172);
-    }
-
-    button:disabled{
-        background-color: rgb(198, 176, 149);
-        color:#9a5718;
-    }
-
-    .claimedby{
-        margin:0px;
-    }
 
     .errmess{
         color:#f57272;

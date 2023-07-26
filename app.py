@@ -1,6 +1,5 @@
-from flask import Flask, request, send_from_directory, jsonify, render_template, session, redirect
+from flask import Flask, request, send_from_directory, jsonify, session, redirect
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from functools import wraps
@@ -86,15 +85,10 @@ class Post(db.Model):
 @loginreq
 def postsquared():
     jfather = request.json
-    #print(jfather)
-    #print(type(jfather))
     postified = Post(title=jfather['title'],description=jfather['description'], posted_by=jfather['posted_by'], is_claimed=jfather['is_claimed'], condition=jfather['condition'])
     db.session.add(postified)
     db.session.flush()
     db.session.commit()
-    '''stmt = select(Post).where(Post.id == jfather.id)
-    result = db.session.execute(stmt)
-    '''
     db.session.refresh(postified) 
     result = Post.query.filter_by(id=postified.id).first()
     print("RESULT IS ", result.title, result.description)
@@ -164,8 +158,7 @@ def singlebooks(id):
     sb = sb.asdict()
     return sb
 
-###################################################################################################################
-
+#users............................................................................................
 @app.route('/createuser', methods=['POST'])
 def newuser():
     req = request.json
@@ -246,7 +239,7 @@ def login():
 # post will send back the username and password given, we query all users from db and see if users is in them
 
 
-# SVELTE STUFF
+# svelte
 @app.route('/', methods=['GET'])
 def base():
     return send_from_directory('client/public', 'index.html')
