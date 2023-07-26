@@ -1,13 +1,24 @@
-from flask import Flask, request, send_from_directory, jsonify, render_template
+from flask import Flask, request, send_from_directory, jsonify, render_template, session, redirect
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
+from functools import wraps
 app = Flask(__name__)
 app.secret_key = "socrates"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:p9adm1n!@localhost:5432/tino_market_db'
 
 db = SQLAlchemy(app)
+
+#decorator!
+def loginreq(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not session.get('isauth'):
+            return(redirect('/'))
+        return(f(*args, **kwargs))
+    return wrapper
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
@@ -71,8 +82,8 @@ class Post(db.Model):
             db.session.add(bdict)
         db.session.commit()
 
-
 @app.route('/postsquared', methods=['POST'])
+@loginreq
 def postsquared():
     jfather = request.json
     #print(jfather)
@@ -90,6 +101,7 @@ def postsquared():
     return f'{result.title} was added to the POSTS database!'
 
 @app.route('/update/<int:id>', methods=['PUT'])
+@loginreq
 def updatebook(id):
     tbu = Post.query.filter_by(id=id).first()
     jfather = request.json
@@ -103,6 +115,7 @@ def updatebook(id):
     return tbu.asdict()
 
 @app.route('/claim/<int:id>', methods=['PUT'])
+@loginreq
 def claimbook(id):
     tbu = Post.query.filter_by(id=id).first()
     jfather = request.json
@@ -110,7 +123,7 @@ def claimbook(id):
     tbu.description = jfather['description']
     tbu.posted_by = jfather['posted_by']
     tbu.is_claimed = True
-    tbu.recipient_id = 1
+    tbu.recipient_id = session['uid']
     tbu.condition = jfather['condition']
     db.session.commit()
     db.session.refresh(tbu)
@@ -120,6 +133,7 @@ def claimbook(id):
 
 
 @app.route('/delete/<int:id>', methods=['DELETE'])
+@loginreq
 def deletebook(id):
     tbd = Post.query.filter_by(id=id).first()
     if tbd is None:
@@ -131,6 +145,7 @@ def deletebook(id):
     
 
 @app.route('/allposts')
+@loginreq
 def getposts():
     allposts = Post.query.all()
     print(allposts)
@@ -142,6 +157,7 @@ def getposts():
     return tbr
 
 @app.route('/books/<int:id>')
+@loginreq
 def singlebooks(id):
     print(id, type(id))
     sb = Post.query.get(id)
@@ -169,11 +185,12 @@ def newuser():
 
 
 @app.route('/users/update/<int:id>', methods=['PUT'])
+@loginreq
 def userupdate(id):
     tbu = User.query.filter_by(id=id).first()
     jfather = request.json
     print(jfather)
-    if (jfather['validation'] == tbu.password):
+    if (jfather['validation'] == tbu.password and session['uid']==tbu.id):
         tbu.username = jfather['username']
         tbu.password = jfather['password']
         tbu.validation = None,
@@ -218,7 +235,13 @@ def login():
     u = User.query.filter_by(username=req['username']).first()
     if u:
         if (u.password == req['password']):
+            session['uid']=u.id
+            session['username']=u.username
+            session['isauth']=True
             return jsonify({'success': True})
+    session['uid']=None
+    session['username']=None
+    session['isauth']=False
     return jsonify({'success': False})
 # post will send back the username and password given, we query all users from db and see if users is in them
 
