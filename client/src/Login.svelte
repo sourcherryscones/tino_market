@@ -1,7 +1,30 @@
 <script>
-    export let postdict = [];
     //[{'id': 8, 'title': 'The Great Gatsby', 'description': 'Stolen from an ALH classroom', 'condition': 'TRAUMATIZED'}]
-    import NewCard from './NewCard.svelte';
+
+    export let es = '';
+    export let pes = '';
+    export let indicator=false;
+    let hidden = false;
+    let showHint = false;
+    function userLogin(){
+        const user = fetch('./login', {
+            method: 'POST',
+            body: JSON.stringify({'username': es, 'password': pes}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(resp => resp.json().then(res => {
+            let userFound = res['success'];
+            if (userFound === true){
+                hidden=true;
+                indicator=true;
+            } else{
+                showHint=true;
+            }
+            //console.log("RES SUCCESS IS " + res['success']);
+            //console.log("TYPE IS " + typeof(res['success']));
+        }));
+    }
 </script>
 
 
@@ -13,18 +36,18 @@
 
         <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     </head>
-    {#each postdict as book}
-    <NewCard book={book} />
-    <!--<div class = "card">
-        <h1>{book['title']}</h1>
-        <p>{book['description']}</p>
-        <h4>Posted by {book['donor']}</h4>
-        <button disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : '+'}</button>
-        {#if book['is_claimed'] == true}
-            <p class="claimedby">(claimed by {book['recip']})</p>
+    {#if hidden==false}
+    <div class="login">
+        <h1>Log in</h1>
+        <input type="text" bind:value={es}>
+        <input type="password" bind:value={pes}>
+        <input type="submit" on:click={() => {userLogin()}}>
+        {#if showHint == true}
+        <br>
+        <small class="errmess">Please check to make sure that your credentials were entered correctly!</small>
         {/if}
-    </div>-->
-    {/each}
+    </div>
+    {/if}
 </main>
 
 <style>
@@ -86,5 +109,10 @@
 
     .claimedby{
         margin:0px;
+    }
+
+    .errmess{
+        color:#f57272;
+        font-weight: bold;
     }
 </style>

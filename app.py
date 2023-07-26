@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, jsonify
+from flask import Flask, request, send_from_directory, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from sqlalchemy.sql import func
@@ -133,10 +133,12 @@ def deletebook(id):
 @app.route('/allposts')
 def getposts():
     allposts = Post.query.all()
+    print(allposts)
     tbr = []
     for p in allposts:
         dictp = p.asdict()
         tbr.append(dictp)
+    #print(tbr)
     return tbr
 
 @app.route('/books/<int:id>')
@@ -208,6 +210,17 @@ def singleuser(id):
     su = Post.query.get(id)
     su = su.asdict()
     return su
+
+@app.route('/login', methods=['POST'])
+def login():
+    req = request.json
+    #print(req)
+    u = User.query.filter_by(username=req['username']).first()
+    if u:
+        if (u.password == req['password']):
+            return jsonify({'success': True})
+    return jsonify({'success': False})
+# post will send back the username and password given, we query all users from db and see if users is in them
 
 
 # SVELTE STUFF

@@ -4,17 +4,13 @@
     export let bookitem;
 
     function claimItem(bk){
-        console.log("CLAIM ITEM S GETTING CALLEDDDD");
-        console.log(bk);
-        console.log('the id of this item is ' + bk['id']);
         const resp = fetch('./claim/' + bk['id'], {
             method: 'PUT',
             body: JSON.stringify(bk),
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(resp => {
-            console.log(resp.json().then(data => {
+        }).then(resp => resp.json().then(data => {
                 bk['is_claimed'] = data['is_claimed']
                 bk['recip'] = data['recip'];
                 alert('stuff happened!!');

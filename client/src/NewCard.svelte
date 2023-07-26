@@ -25,7 +25,7 @@
 </script>
 <main>
     <div class = "cardcont">
-        <img src="https://m.media-amazon.com/images/I/913AUm7VHhL._AC_UF1000,1000_QL80_.jpg"/>
+        <img src="https://m.media-amazon.com/images/I/913AUm7VHhL._AC_UF1000,1000_QL80_.jpg" alt="princeton review image"/>
         <h1 class="cardtitle">{book['title']}</h1>
         <p>{book['description']}</p>
         <h4>Posted by {book['donor']}</h4>
@@ -50,6 +50,9 @@
 		min-height: 250px;
         text-align: center;
         margin:3px;
+        font-family: 'Barlow', sans-serif;
+        font-weight: 500;
+        color: #5c577f;
     }
 
     img{
