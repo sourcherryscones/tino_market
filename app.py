@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, jsonify, session, redirect
+from flask import Flask, request, send_from_directory, jsonify, session, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -172,8 +172,8 @@ def newuser():
     
     db.session.refresh(newuser)
     result = User.query.filter_by(id=newuser.id).first()
-    print("RESULT IS ", result.username, result.grade)
-    return f'{result.username} was added to the USERS database!'
+    #print("RESULT IS ", result.username, result.grade)
+    return jsonify({'registered': True, 'reguser': result.username})
 # works
 
 
@@ -237,6 +237,17 @@ def login():
     session['isauth']=False
     return jsonify({'success': False})
 # post will send back the username and password given, we query all users from db and see if users is in them
+
+@app.route('/logout', methods=['POST'])
+@loginreq
+def logout():
+    req = request.json
+    if req['logout'] == True:
+        session.pop('uid', None)
+        session.pop('username', None)
+        session['isauth']=False
+        return jsonify({'logoutsuccessful': True})
+    return jsonify({'logoutsuccessful': False})
 
 
 # svelte

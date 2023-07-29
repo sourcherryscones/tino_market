@@ -1,8 +1,11 @@
 <script>
 	let dflt = [];
 	let showButton = true;
+	let showLogout = false;
+	let showReg = false;
 	import Login from './Login.svelte'
 	import Feed from './Feed.svelte'
+	import Register from './Register.svelte'
 	let loginSuccess = false;
 	function getBooks(){
 		fetch("./allposts")
@@ -15,21 +18,26 @@
 	}
 	$: {if(loginSuccess){
 		getBooks()
+		showLogout = true;
 	} else{
 		dflt=[]
+		showLogout = false;
 	}};
 </script>
 
 <main>
 	<h1>tino exchange.</h1>
 	<Login bind:indicator={loginSuccess}/>
+	<button on:click={() => {showReg = true}}>New user? Register here!</button>
+	{#if showReg}
+		<Register bind:indicator={showReg}/>
+	{/if}
 	<Feed postdict={dflt}/>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 	</main>
 
 <style>
 	main{
-		margin-left: 20px;
+		/*margin-left: 20px;*/
 	}
 	h1 {
 		color: #ff3e00;
