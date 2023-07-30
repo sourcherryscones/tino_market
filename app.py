@@ -85,14 +85,14 @@ class Post(db.Model):
 @loginreq
 def postsquared():
     jfather = request.json
-    postified = Post(title=jfather['title'],description=jfather['description'], posted_by=jfather['posted_by'], is_claimed=jfather['is_claimed'], condition=jfather['condition'])
+    postified = Post(title=jfather['title'],description=jfather['description'], posted_by=session['uid'], is_claimed=False, condition=jfather['condition'])
     db.session.add(postified)
     db.session.flush()
     db.session.commit()
     db.session.refresh(postified) 
     result = Post.query.filter_by(id=postified.id).first()
     print("RESULT IS ", result.title, result.description)
-    return f'{result.title} was added to the POSTS database!'
+    return result.asdict()
 
 @app.route('/update/<int:id>', methods=['PUT'])
 @loginreq

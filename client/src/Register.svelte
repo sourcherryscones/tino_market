@@ -1,4 +1,6 @@
 <script>
+    import { push } from "svelte-spa-router";
+
     export let username = '';
     export let grade = 0;
     export let password = '';
@@ -17,7 +19,11 @@
         }).then(resp => resp.json().then(res => {
             let isRegistered = res['registered']
             if (isRegistered){
-                hidden=true;
+                username = '';
+                grade = 0;
+                password = '';
+                passwordconf = '';
+                push('/');
             } else {
                 showHint = true;
             }
