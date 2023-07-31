@@ -22,12 +22,12 @@ def loginreq(f):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(50), nullable=False)
-    validation = db.Column(db.String(50))
     grade = db.Column(db.Integer)
 
     def asdict(self):
-        return {'id': self.id, 'username': self.username, 'grade': self.grade, 'validation': self.validation}
+        return {'id': self.id, 'username': self.username, 'email': self.email, 'grade': self.grade}
 
 
 # Post model
@@ -135,7 +135,7 @@ def deletebook(id):
     deleted_title = tbd.title
     db.session.delete(tbd)
     db.session.commit()
-    return f'{deleted_title} was deleted from the database!'
+    return jsonify({'delbooksuccess': True})
     
 
 @app.route('/allposts')
@@ -163,7 +163,7 @@ def singlebooks(id):
 def newuser():
     req = request.json
     
-    newuser = User(username=req['username'], password=req['password'], grade=req['grade'])
+    newuser = User(username=req['username'], email=req['email'], password=req['password'], grade=req['grade'])
     db.session.add(newuser)
     db.session.flush()
     db.session.commit()
@@ -189,7 +189,7 @@ def userupdate(id):
         tbu.validation = None,
         tbu.grade = jfather['grade']
         db.session.commit()
-        return f'{tbu.username} was successfully updated!' 
+        return jsonify({'updatesuccess': True})
     else:
         return "ERROR: invalid credentials :("
         #return redirect('/error')
@@ -203,7 +203,7 @@ def deluser(id):
     deleted_name = tbd.username
     db.session.delete(tbd)
     db.session.commit()
-    return f'{deleted_name} was deleted from the USERS database!'
+    return jsonify({'delusersuccess': True})
     
 
 @app.route('/users')
