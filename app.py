@@ -15,7 +15,7 @@ def create_app():
     db = SQLAlchemy(app)
     return app
 
-app = create_app()
+# app = create_app()
 
 #decorator!
 def loginreq(f):
