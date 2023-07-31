@@ -89,6 +89,10 @@ class Post(db.Model):
             db.session.add(bdict)
         db.session.commit()
 
+@app.route('/helloworld', methods=['GET'])
+def hello():
+    return 'hello, render!!'
+
 @app.route('/postsquared', methods=['POST'])
 @loginreq
 def postsquared():
