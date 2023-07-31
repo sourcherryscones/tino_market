@@ -11,5 +11,5 @@ pip==22.0.4
 psycopg2==2.9.6
 setuptools==58.1.0
 SQLAlchemy==2.0.19
-typing_extensions 4.7.1
+typing_extensions==4.7.1
 Werkzeug==2.3.6
