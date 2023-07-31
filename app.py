@@ -3,11 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from functools import wraps
-app = Flask(__name__)
-app.secret_key = "socrates"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:p9adm1n!@localhost:5432/tino_market_db'
+import os
+db:SQLAlchemy = None
 
-db = SQLAlchemy(app)
+
+def create_app():
+    global db
+    app = Flask(__name__)
+    app.secret_key = "socrates"
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+    db = SQLAlchemy(app)
+    return app
+
+app = create_app()
 
 #decorator!
 def loginreq(f):
