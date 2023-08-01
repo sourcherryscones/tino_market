@@ -35,3 +35,27 @@
   --switch-color: var(--primary-inverse);
   --switch-checked-background-color: var(--primary);
 }
+.cardtitle{
+	margin:0px;
+}
+.cardimg{
+	text-align:center;
+	align-items: center;
+	width:20%;
+	height:40%;
+}
+
+.gbadge{
+	background-color:#76d279a1;
+	color:#173b19;
+	border-radius:4px;
+	padding:2px 4px;
+	display:inline-block;
+}
+
+.login.grid{
+	min-width:400px;
+	grid-column-start:1;
+	grid-row-start:1;
+	grid-row-end:2;
+}

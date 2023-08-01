@@ -24,14 +24,17 @@
     //export let description = 'basically exactly what it sounds like lmfao';
 </script>
 <main>
-    <div class = "cardcont">
-        <img src="https://m.media-amazon.com/images/I/913AUm7VHhL._AC_UF1000,1000_QL80_.jpg" alt="princeton review image"/>
+    <article class="minwid">
+        <img src="https://m.media-amazon.com/images/I/913AUm7VHhL._AC_UF1000,1000_QL80_.jpg" align="center" class="cardimg"/>
         <h1 class="cardtitle">{book['title']}</h1>
+        <h6 class="gbadge">{book['condition']}</h6>
         <p>{book['description']}</p>
         <h4>Posted by {book['donor']}</h4>
-        <button disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : '+'}</button>
+        <div class="grid">
+            <button disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : '+'}</button>            
+        </div>
         {#if book['is_claimed'] == true}
             <p class="claimedby">(claimed by {book['recip']})</p>
         {/if}
-    </div>
+    </article>
 </main>

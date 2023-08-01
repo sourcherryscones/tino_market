@@ -1,10 +1,15 @@
 <script>
     import { push } from "svelte-spa-router";
-
+    import Card from "./Card.svelte"
     let username = '';
     let password = '';
     let showHint = false;
-
+    //TO BE DELETED
+    let bk = {"title": "The Greatest of Gatsbies", "description": "ALH required reading, pretty good condition", "condition": "GOOD"};
+    let bkarr = [];
+    for (let i=0; i < 10; i++){
+        bkarr.push(bk);
+    }
     function userLogin(){
         const user = fetch('./login', {
             method: 'POST',
@@ -40,11 +45,13 @@
             Password:
             <input type="password" bind:value={password}>
         </label>
-        <input type="submit" value="Let's go!" on:click={() => {userLogin()}}>
+        <input type="submit" value="Let's go!" disabled={!(password && username)} on:click={() => {userLogin()}}>
         {#if showHint == true}
         <br>
         <small class="errmess">Please check to make sure that your credentials were entered correctly!</small>
         {/if}
     </div>
+    
+        
 </main>
 

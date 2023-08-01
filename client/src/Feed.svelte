@@ -33,9 +33,11 @@
 <main>
     <head>
     </head>
-    {#each booklist as book}
-        <Card book={book} />
-    {/each}
+    <div class="grid">
+        {#each booklist as book}
+            <Card book={book} />
+        {/each}
+    </div>
     {#if showLogout == true}
         <button on:click = {logout}>Log out</button>
     {/if}
