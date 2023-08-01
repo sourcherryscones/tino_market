@@ -39,7 +39,7 @@
         {/each}
     </div>
     {#if showLogout == true}
-        <button on:click = {logout}>Log out</button>
+        <button class="outline" on:click = {logout}>Log out</button>
     {/if}
     <h1><a href="/post" use:link>Post</a></h1>
 </main>

@@ -155,6 +155,7 @@ def deletebook(id):
     db.session.commit()
     return jsonify({'delbooksuccess': True})
     
+#postgresql://george:eLHIdQjpHcmzcAy7NHzQ7byv7W4ZKYvB@dpg-cj3jvdliuie55plgaasg-a.oregon-postgres.render.com/tino_market
 
 @app.route('/allposts')
 @loginreq
@@ -175,7 +176,7 @@ def getposts():
 
 @app.route('/myitems')
 @loginreq
-def getposts():
+def getmyitems():
     myid = session['uid']
     myposts = Post.query.filter_by(recipient_id=myid)
     print(myposts)
