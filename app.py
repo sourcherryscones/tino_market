@@ -134,8 +134,14 @@ def claimbook(id):
     db.session.commit()
     db.session.refresh(tbu)
     print(tbu.asdict())
-    return tbu.asdict()
-    
+    p=tbu
+    dictp = tbu.asdict()
+    if dictp['is_claimed'] == True:
+            if (session['uid'] == p.donor.id):
+                dictp['recip_email'] = p.recip.email
+            if (session['uid'] == p.recip.id):
+                dictp['donor_email'] = p.donor.email
+    return dictp
 
 
 @app.route('/delete/<int:id>', methods=['DELETE'])
@@ -158,6 +164,29 @@ def getposts():
     tbr = []
     for p in allposts:
         dictp = p.asdict()
+        if dictp['is_claimed'] == True:
+            if (session['uid'] == p.donor.id):
+                dictp['recip_email'] = p.recip.email
+            if (session['uid'] == p.recip.id):
+                dictp['donor_email'] = p.donor.email
+        tbr.append(dictp)
+    #print(tbr)
+    return tbr
+
+@app.route('/myitems')
+@loginreq
+def getposts():
+    myid = session['uid']
+    myposts = Post.query.filter_by(recipient_id=myid)
+    print(myposts)
+    tbr = []
+    for p in myposts:
+        dictp = p.asdict()
+        if dictp['is_claimed'] == True:
+            if (session['uid'] == p.donor.id):
+                dictp['recip_email'] = p.recip.email
+            if (session['uid'] == p.recip.id):
+                dictp['donor_email'] = p.donor.email
         tbr.append(dictp)
     #print(tbr)
     return tbr

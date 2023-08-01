@@ -15,6 +15,7 @@
             console.log(resp.json().then(data => {
                 bk['is_claimed'] = data['is_claimed']
                 bk['recip'] = data['recip'];
+                bk['donor_email'] = data['donor_email'];
                 //alert('stuff happened!!');
                 bk=bk;
                 book=book;
@@ -30,11 +31,17 @@
         <h6 class="gbadge">{book['condition']}</h6>
         <p>{book['description']}</p>
         <h4>Posted by {book['donor']}</h4>
+        {#if book.donor_email != null}
+            <h6>Contact at <span>{book['donor_email']}</span></h6>
+        {/if}
         <div class="grid">
             <button disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : '+'}</button>            
         </div>
         {#if book['is_claimed'] == true}
             <p class="claimedby">(claimed by {book['recip']})</p>
+        {/if}
+        {#if book.recip_email != null}
+            <h6>Contact at <span>{book['recip_email']}</span></h6>
         {/if}
     </article>
 </main>
