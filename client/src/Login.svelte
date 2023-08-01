@@ -26,20 +26,21 @@
 </script>
 
 
-<main>
+<main class="container">
     <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-        <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     </head>
     <div class="login">
         
-        <h1>Log in</h1>
-        <input type="text" bind:value={username}>
-        <input type="password" bind:value={password}>
-        <input type="submit" on:click={() => {userLogin()}}>
+        <h1>Log in!</h1>
+        <label>
+            Username:
+            <input type="text" bind:value={username}>
+        </label>
+        <label>
+            Password:
+            <input type="password" bind:value={password}>
+        </label>
+        <input type="submit" value="Let's go!" on:click={() => {userLogin()}}>
         {#if showHint == true}
         <br>
         <small class="errmess">Please check to make sure that your credentials were entered correctly!</small>
@@ -47,38 +48,3 @@
     </div>
 </main>
 
-<style>
-    main {
-		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: auto;
-		gap: 20px;
-		max-width: 960px;
-		margin: auto;
-	}
-	@media (min-width: 600px) {
-		main {
-			grid-template-columns: 1fr 1fr 1fr;
-		}
-		div {
-			min-height: auto;
-		}
-	}
-
-    .login{
-        margin: auto;
-    }
-
-    h1{
-        color: #27214D;
-        font-size: 40px;
-        font-family: 'Barlow', sans-serif;
-        font-weight: 800;
-        text-transform: uppercase;
-    }
-
-    .errmess{
-        color:#f57272;
-        font-weight: bold;
-    }
-</style>
