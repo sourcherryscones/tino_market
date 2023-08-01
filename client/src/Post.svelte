@@ -34,10 +34,10 @@
     </head>
     <div class="post">
         <h1>Create new post</h1>
-        <input type="text" bind:value={title}>
-        <input type="text" bind:value={description}>
+        <input type="text" bind:value={title} placeholder="Item title">
+        <input type="text" bind:value={description} placeholder="Item description">
         <select bind:value={condition}>
-            <option value="GOOD">Good</option>
+            <option value="GOOD" selected>Good</option>
             <option value="OK">OK</option>
         </select>
         <input type="submit" on:click={() => {addPost()}}>

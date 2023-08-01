@@ -24,7 +24,7 @@
                 grade = 0;
                 password = '';
                 passwordconf = '';
-                push('/');
+                push('/login');
             } else {
                 showHint = true;
             }

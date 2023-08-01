@@ -41,5 +41,5 @@
     {#if showLogout == true}
         <button class="outline" on:click = {logout}>Log out</button>
     {/if}
-    <h1><a href="/post" use:link>Post</a></h1>
+    <h2 role="button" class="outline"><a href="/post" use:link>Post a new item!</a></h2>
 </main>
