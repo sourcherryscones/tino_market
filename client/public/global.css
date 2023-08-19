@@ -34,6 +34,13 @@
   --form-element-focus-color: var(--primary-focus);
   --switch-color: var(--primary-inverse);
   --switch-checked-background-color: var(--primary);
+  --font-family: 'DM Sans', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 .cardtitle{
 	margin:0px;
