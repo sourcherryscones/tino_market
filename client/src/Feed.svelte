@@ -47,8 +47,8 @@
             <Card book={book} />
         {/each}
     </div>
+    <button on:click = {() => {push('/post')}}>Create new post</button>
     {#if showLogout == true}
-    <button class="button primary" on:click = {logout}>Log out</button>
+    <button class="outline" on:click = {logout}>Log out</button>
     {/if}
-    <button class="outline" href="/post">Post a new item!</button>
 </main>
