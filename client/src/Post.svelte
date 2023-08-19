@@ -40,7 +40,7 @@
             <option value="GOOD" selected>Good</option>
             <option value="OK">OK</option>
         </select>
-        <input type="submit" on:click={() => {addPost()}}>
+        <input class="btn" type="submit" on:click={() => {addPost()}}>
         {#if showHint == true}
         <br>
         <small class="errmess">Please check to make sure that your post has all of the necessary elements!</small>

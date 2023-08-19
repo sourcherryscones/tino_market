@@ -10,6 +10,15 @@
         const res = await fetch('./allposts');
         const resp = await res.json();
         booklist = resp;
+        let tempbl = [];
+        for (let i=0;i<booklist.length-3;i+=3){
+            let miniarr = [];
+            for (let j=i; j < i+3; j++){
+                miniarr.push(booklist[j]);
+            }
+            tempbl.push(miniarr);
+        }
+        console.log(tempbl);
     });
 
     function logout(){
@@ -23,7 +32,7 @@
             let loggedOut = res['logoutsuccessful'];
             if (loggedOut == true){
                 showLogout = false;
-                push('/')
+                push('/login')
             }
         }))
     }
@@ -39,7 +48,7 @@
         {/each}
     </div>
     {#if showLogout == true}
-        <button class="outline" on:click = {logout}>Log out</button>
+    <button class="button primary" on:click = {logout}>Log out</button>
     {/if}
-    <h2 role="button" class="outline"><a href="/post" use:link>Post a new item!</a></h2>
+    <button class="outline" href="/post">Post a new item!</button>
 </main>

@@ -1,21 +1,43 @@
 from flask import Flask, request, send_from_directory, jsonify, session, redirect, url_for
+from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from functools import wraps
 import os
 db:SQLAlchemy = None
+mail:Mail = None
+'''
+TODO:
+class FlaskApp(Flask):
+    app:FlaskApp = FlaskApp(__name__)
+    db:SQLAlchemy = SQLAlchemy(app)
+    mail:Mail = Mail()
 
-
+    def getcontext():
+        return app
+'''
 def create_app():
     global db
+    global mail
     app = Flask(__name__)
     app.secret_key = "socrates"
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-    db = SQLAlchemy(app)
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_USE_SSL'] = True
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_USERNAME'] = 'purva.does.stuff@gmail.com'
+    app.config['MAIL_PASSWORD'] = 'baojechelkjhsyxr'
+    app.config['MAIL_DEFAULT_SENDER'] = 'purva.does.stuff@gmail.com'
+    app.config['MAIL_SUPPRESS_SEND'] = app.testing
+    db = SQLAlchemy(app, engine_options={"pool_pre_ping": True})
+    mail = Mail()
+    mail.init_app(app)
     return app
 
 app = create_app()
+ # ASK ABOUT THIS
 
 #decorator!
 def loginreq(f):
@@ -123,6 +145,7 @@ def updatebook(id):
 @app.route('/claim/<int:id>', methods=['PUT'])
 @loginreq
 def claimbook(id):
+    global mail
     tbu = Post.query.filter_by(id=id).first()
     jfather = request.json
     tbu.title = jfather['title']
@@ -141,6 +164,9 @@ def claimbook(id):
                 dictp['recip_email'] = p.recip.email
             if (session['uid'] == p.recip.id):
                 dictp['donor_email'] = p.donor.email
+            msg = Message((p.recip.username + " claimed your" + p.title) + "!", recipients=[p.donor.email])
+            msg.body = "LMAO GO TO THE WEBSITE FOR MORE DETAILS >:D"
+            mail.send(msg)
     return dictp
 
 

@@ -44,7 +44,9 @@ h1,h2,h3,h4,h5,h6{
 }
 .cardtitle{
 	margin:0px;
+  font-size:25px;
 }
+
 .cardimg{
 	text-align:center;
 	align-items: center;
@@ -65,4 +67,21 @@ h1,h2,h3,h4,h5,h6{
 	grid-column-start:1;
 	grid-row-start:1;
 	grid-row-end:2;
+}
+
+.grid{
+  margin:20px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1px;
+}
+
+button{
+  position:relative;
+  margin-top:40px;
+}
+
+
+article{
+  margin:5px;
 }

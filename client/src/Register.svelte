@@ -64,9 +64,9 @@
             Confirm password:
             <input type="password" bind:value={passwordconf}>
         </label>
-        <input type="submit" value="Let's go!" disabled = {!(password === passwordconf && password != '' && grade > 8 && grade < 13)} on:click={() => {register()}}>
+        <input class="btn" type="submit" value="Let's go!" disabled = {!(password === passwordconf && password != '' && grade > 8 && grade < 13)} on:click={() => {register()}}>
         <br>
-        <small class="info">Please check to make sure that your credentials are valid! You must be between 9th and 12th grade and enter a valid password :)</small>
+        <small class="info">Please check to make sure that your credentials are valid! You must use your FUHSD email, be between 9th and 12th grade, and enter a valid password :)</small>
     </div>
     {/if}
 </main>
