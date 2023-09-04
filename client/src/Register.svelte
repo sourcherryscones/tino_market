@@ -2,7 +2,7 @@
     import { push } from "svelte-spa-router";
 
     let username = '';
-    let grade = 0;
+    let grade = 9;
     let email = '';
     let password = '';
     let passwordconf = ''
@@ -11,9 +11,9 @@
     let hidden = false;
     let showHint = false;
     function register(){
-        const reg = fetch('./createuser', {
+        const reg = fetch('./signup', {
             method:'POST',
-            body: JSON.stringify({'username': username, 'email': email,'password': password, 'grade': grade}),
+            body: JSON.stringify({'username': username, 'email': email,'password': password, 'pwconf': passwordconf, 'grade': grade}),
             headers: {
                 'Content-Type': 'application/json'
             }

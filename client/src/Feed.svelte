@@ -10,15 +10,6 @@
         const res = await fetch('./allposts');
         const resp = await res.json();
         booklist = resp;
-        let tempbl = [];
-        for (let i=0;i<booklist.length-3;i+=3){
-            let miniarr = [];
-            for (let j=i; j < i+3; j++){
-                miniarr.push(booklist[j]);
-            }
-            tempbl.push(miniarr);
-        }
-        console.log(tempbl);
     });
 
     function logout(){
