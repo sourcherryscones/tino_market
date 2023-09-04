@@ -1,6 +1,5 @@
 from flask import request, send_from_directory, jsonify, session, redirect, Blueprint
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_mail import Message
 from flask_login import login_user, logout_user, login_required, login_manager
 from .models import db, Post, User
 
