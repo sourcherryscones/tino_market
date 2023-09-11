@@ -35,6 +35,7 @@
   --switch-color: var(--primary-inverse);
   --switch-checked-background-color: var(--primary);
   --font-family: 'DM Sans', sans-serif;
+  --bs-content: var(--primary)
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -50,8 +51,9 @@ h1,h2,h3,h4,h5,h6{
 .cardimg{
 	text-align:center;
 	align-items: center;
-	width:20%;
+	width:auto;
 	height:40%;
+  max-height:350px;
 }
 
 .gbadge{
@@ -73,7 +75,7 @@ h1,h2,h3,h4,h5,h6{
   margin:20px;
   display:grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1px;
+  grid-gap:10px;
 }
 
 button{
@@ -81,7 +83,6 @@ button{
   margin-top:40px;
 }
 
-
-article{
-  margin:5px;
+.gbadge-container{
+  margin:10px;
 }

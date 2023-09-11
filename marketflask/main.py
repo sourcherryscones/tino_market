@@ -1,11 +1,14 @@
 import os
-from flask import request, send_from_directory, jsonify, session, redirect, Blueprint
+from flask import request, send_from_directory, jsonify, session, redirect, Blueprint, current_app
+from .sthree import upload_file_to_s3, allowed_file, get_unique_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail as sgmail
+import boto3
 
 from flask_login import login_required, current_user
 from .models import db, Post
+from marketflask import s3_client
 
 main = Blueprint('main', __name__)
 
@@ -21,15 +24,40 @@ def home(path):
 @main.route('/postsquared', methods=['POST'])
 @login_required
 def postsquared():
-    jfather = request.json
-    postified = Post(title=jfather['title'],description=jfather['description'], posted_by=current_user.id, is_claimed=False, condition=jfather['condition'])
+    fyles = request.files
+    if 'postimg' not in fyles:
+        return "<h1>Did not include image</h1>"
+    pimg = fyles['postimg']
+
+    if not allowed_file(pimg.filename):
+        return "<h1>Did not include proper image type</h1>"
+    
+    pimg.filename = get_unique_filename(pimg.filename)
+
+    upload = upload_file_to_s3(s3_client, current_app.config['BUCKET_NAME'], pimg)
+
+    print(upload)
+
+    if 'url' not in upload:
+        return "<h1>Upload failed D:</h1>"
+    
+    
+    yourl = upload['url']
+    print("YOURL IS")
+    print(yourl)
+    print(type(yourl))
+
+    #update the db model thing
+    fdata = dict(request.form)
+    print(fdata)
+    postified = Post(title=fdata['title'],description=fdata['description'], posted_by=current_user.id, is_claimed=False, condition=fdata['condition'], image=yourl)
     db.session.add(postified)
     db.session.flush()
     db.session.commit()
     db.session.refresh(postified) 
     result = Post.query.filter_by(id=postified.id).first()
     print("RESULT IS ", result.title, result.description)
-    return result.asdict()
+    return redirect('/#/feed')
 
 
 @main.route('/claim/<int:id>', methods=['PUT'])

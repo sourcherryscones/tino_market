@@ -25,10 +25,37 @@
     //export let description = 'basically exactly what it sounds like lmfao';
 </script>
 <main>
-    <article>
-        <img src="https://m.media-amazon.com/images/I/913AUm7VHhL._AC_UF1000,1000_QL80_.jpg" align="center" class="cardimg" alt="book"/>
-        <h5 class="cardtitle">{book['title']}</h5>
-        <h6 class="gbadge">{book['condition']}</h6>
+    <div class="card">
+        <img src={book['image']} align="center" class="card-img-top" alt="book"/>
+        <div class="card-body">
+            <h5 class="card-title">{book['title']}</h5>
+            <h6 class="gbadge" style={(book['condition'] == "OK") ? "background-color:yellow" : "background-color: #76d279a1"}>{book['condition']}</h6>
+            <p class="card-text">lorem ipsum dolor sit amet!!!</p>
+            <button class="btn btn-primary btn-lg" disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : '+'}</button>
+        </div>
+        
+    </div>
+</main>
+
+<style>
+    .lwrcs{
+        text-transform: lowercase;
+    }
+
+    .card-img-top{
+        height:300px;
+        object-fit:cover
+    }
+
+    .btn{
+        background-color:#43a047;
+    }
+</style>
+
+<!--
+
+    <h5 class="cardtitle">{book['title']}<span class="gbadge-container"><h6 class="gbadge" style={(book['condition'] == "OK") ? "background-color:yellow" : "background-color: #76d279a1"}>{book['condition']}</h6></span></h5>
+        
         <p>{book['description']}</p>
         <h4>Posted by {book['donor']}</h4>
         {#if book.donor_email != null}
@@ -43,11 +70,4 @@
         {#if book.recip_email}
             <h6>Contact at <span class="lwrcs">{book['recip_email']}</span></h6>
         {/if}
-    </article>
-</main>
-
-<style>
-    .lwrcs{
-        text-transform: lowercase;
-    }
-</style>
+-->

@@ -32,6 +32,7 @@ class Post(db.Model):
     recipient_id = db.Column(db.Integer, db.ForeignKey(User.id))
     is_claimed = db.Column(db.Boolean, nullable=False)
     condition = db.Column(db.String(4), nullable=False)
+    image = db.Column(db.String(100))
 
     donor = relationship('User', foreign_keys='Post.posted_by')
     recip = relationship('User', foreign_keys='Post.recipient_id')
@@ -39,7 +40,7 @@ class Post(db.Model):
 
 
     def asdict(self):
-        base = {'id': self.id, 'title': self.title, 'description': self.description, 'posted_by': self.posted_by, 'date_posted': str(self.date_posted), 'recipient_id': self.recipient_id, 'is_claimed': self.is_claimed, 'condition': self.condition}
+        base = {'id': self.id, 'title': self.title, 'description': self.description, 'posted_by': self.posted_by, 'date_posted': str(self.date_posted), 'recipient_id': self.recipient_id, 'is_claimed': self.is_claimed, 'condition': self.condition, 'image': self.image}
         if (self.donor != None):
             base['donor'] = self.donor.username
         if (self.recip != None):
