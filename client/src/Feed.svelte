@@ -43,3 +43,10 @@
     <button class="outline" on:click = {logout}>Log out</button>
     {/if}
 </main>
+
+<style>
+    @media only screen and (max-width:595px){ .grid{ grid-template-columns:repeat(1, 1fr); } }
+    @media only screen and (min-width:600px){ .grid{ grid-template-columns:repeat(1, 1fr); } }
+    @media only screen and (min-width:785px){ .grid{ grid-template-columns:repeat(2, 1fr); } }
+    @media only screen and (min-width:890px){ .grid{ grid-template-columns:repeat(3, 1fr); } }
+</style>

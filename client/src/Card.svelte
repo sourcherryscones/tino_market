@@ -30,8 +30,11 @@
         <div class="card-body">
             <h5 class="card-title">{book['title']}</h5>
             <h6 class="gbadge" style={(book['condition'] == "OK") ? "background-color:yellow" : "background-color: #76d279a1"}>{book['condition']}</h6>
-            <p class="card-text">lorem ipsum dolor sit amet!!!</p>
+            <p class="card-text">{book['description']}</p>
             <button class="btn btn-primary btn-lg" disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : '+'}</button>
+            {#if book.recip_email}
+                <h6>Contact at <span class="lwrcs">{book['recip_email']}</span></h6>
+            {/if}
         </div>
         
     </div>
@@ -67,7 +70,5 @@
         {#if book['is_claimed'] == true}
             <p class="claimedby">(claimed by {book['recip']})</p>
         {/if}
-        {#if book.recip_email}
-            <h6>Contact at <span class="lwrcs">{book['recip_email']}</span></h6>
-        {/if}
+        
 -->
