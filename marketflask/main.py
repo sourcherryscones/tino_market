@@ -20,37 +20,49 @@ def base():
 @main.route('/<path:path>')
 def home(path):
     return send_from_directory('../client/public', path)
-
+'''
+post categories: book, textbook, notebook, other
+'''
 @main.route('/postsquared', methods=['POST'])
 @login_required
 def postsquared():
+    fdata = dict(request.form)
+    dfltimg = False
     fyles = request.files
-    if 'postimg' not in fyles:
-        return "<h1>Did not include image</h1>"
-    pimg = fyles['postimg']
-
-    if not allowed_file(pimg.filename):
-        return "<h1>Did not include proper image type</h1>"
+    if not fyles['postimg'].filename:
+        dfltimg = True
+        #return "<h1>Did not include image</h1>"
     
-    pimg.filename = get_unique_filename(pimg.filename)
+    if dfltimg == False:
+        pimg = fyles['postimg']
 
-    upload = upload_file_to_s3(s3_client, current_app.config['BUCKET_NAME'], pimg)
+        if not allowed_file(pimg.filename):
+            return "<h1>Did not include proper image type</h1>"
+        
+        pimg.filename = get_unique_filename(pimg.filename)
 
-    print(upload)
+        upload = upload_file_to_s3(s3_client, current_app.config['BUCKET_NAME'], pimg)
 
-    if 'url' not in upload:
-        return "<h1>Upload failed D:</h1>"
-    
-    
-    yourl = upload['url']
+        print(upload)
+
+        if 'url' not in upload:
+            return "<h1>Upload failed D:</h1>"
+        
+        
+        yourl = upload['url']
+    else:
+        if fdata['category'] == 'PREPBOOK':
+            yourl = "https://tinomarket-images.s3.us-west-1.amazonaws.com/notebookicon.png"
+        else:
+            yourl = "https://tinomarket-images.s3.us-west-1.amazonaws.com/undrawnotesicon.png"
     print("YOURL IS")
     print(yourl)
     print(type(yourl))
 
     #update the db model thing
-    fdata = dict(request.form)
+    
     print(fdata)
-    postified = Post(title=fdata['title'],description=fdata['description'], posted_by=current_user.id, is_claimed=False, condition=fdata['condition'], image=yourl)
+    postified = Post(title=fdata['title'],description=fdata['description'], posted_by=current_user.id, is_claimed=False, condition=fdata['condition'], image=yourl, category=fdata['category'])
     db.session.add(postified)
     db.session.flush()
     db.session.commit()
@@ -125,11 +137,10 @@ def deletebook(id):
     db.session.commit()
     return jsonify({'delbooksuccess': True})
 
-# homemade auth might pose some issues or something
 @main.route('/allposts')
 @login_required
 def getposts():
-    allposts = Post.query.all()
+    allposts = Post.query.filter_by(is_claimed=False)
     print(allposts)
     tbr = []
     for p in allposts:
@@ -148,6 +159,24 @@ def getposts():
 def getmyitems():
     myid = current_user.id
     myposts = Post.query.filter_by(recipient_id=myid)
+    print(myposts)
+    tbr = []
+    for p in myposts:
+        dictp = p.asdict()
+        if dictp['is_claimed'] == True:
+            if (current_user.id == p.donor.id):
+                dictp['recip_email'] = p.recip.email
+            if (current_user.id == p.recip.id):
+                dictp['donor_email'] = p.donor.email
+        tbr.append(dictp)
+    #print(tbr)
+    return tbr
+
+@main.route('/myposts')
+@login_required
+def getmyposts():
+    myid = current_user.id
+    myposts = Post.query.filter_by(posted_by=myid)
     print(myposts)
     tbr = []
     for p in myposts:

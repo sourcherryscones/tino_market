@@ -10,7 +10,11 @@
     let conftext = '';
     let hidden = false;
     let showHint = false;
+    let hint = '';
     function register(){
+        console.log("button clicked!")
+        console.log("is the email from fuhsd??")
+        console.log(email.endsWith('fuhsd.org'))
         const reg = fetch('./signup', {
             method:'POST',
             body: JSON.stringify({'username': username, 'email': email,'password': password, 'pwconf': passwordconf, 'grade': grade}),
@@ -27,6 +31,11 @@
                 push('/login');
             } else {
                 showHint = true;
+                if (res['error'] == 'USER ALREADY EXISTS'){
+                    hint = 'Looks like that email/username is already taken; please log in instead or use a different one!';
+                } else {
+                    hint = 'Please check to make sure that your credentials are valid! You must use your FUHSD email, be between 9th and 12th grade, and enter a valid password :)';
+                }
             }
         }))
     }
@@ -64,9 +73,11 @@
             Confirm password:
             <input type="password" bind:value={passwordconf}>
         </label>
-        <input class="btn" type="submit" value="Let's go!" disabled = {!(password === passwordconf && password != '' && grade > 8 && grade < 13)} on:click={() => {register()}}>
+        <input class="btn" type="submit" value="Let's go!" disabled = {!(password === passwordconf && password != '' && grade > 8 && grade < 13 && email.endsWith('fuhsd.org'))} on:click={() => {register()}}>
         <br>
-        <small class="info">Please check to make sure that your credentials are valid! You must use your FUHSD email, be between 9th and 12th grade, and enter a valid password :)</small>
+        {#if (showHint == true)}
+            <small class="info">{hint}</small>
+        {/if}
     </div>
     {/if}
 </main>

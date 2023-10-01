@@ -1,4 +1,6 @@
 <script>
+    import { push } from "svelte-spa-router";
+
     export let book;
     let modalVisible = false;
 
@@ -10,7 +12,7 @@
         modalVisible = false;
     }
 
-    function claimItem(bk){
+    /*function claimItem(bk){
         console.log("CLAIM ITEM S GETTING CALLEDDDD");
         console.log(bk);
         console.log('the id of this item is ' + bk['id']);
@@ -31,7 +33,27 @@
             }));
         });
     }
+    */
     //export let description = 'basically exactly what it sounds like lmfao';
+
+    function deleteBook(bk){
+        const resp = fetch('./delete/' + bk['id'], {
+            method: 'DELETE',
+            body: JSON.stringify(bk),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(resp => {
+            console.log(resp.json().then(data => {
+               let deleteSuccess = data['delbooksuccess'];
+               console.log("MOMENT OF TRUTH DID IT GET DELETED?")
+               console.log(data['delbooksuccess']);
+               if (deleteSuccess){
+                push('/myposts')
+               }
+            }));
+        });
+    }
 </script>
 <main>
     <div class="card">
@@ -44,7 +66,7 @@
             <h6 class="gbadge" style={(book['condition'] == "OK") ? "background-color:yellow" : "background-color: #76d279a1"}>{book['condition']}</h6>
             <br>
             <p class="card-text">{book['description']}</p>
-            <button class="btn btn-primary btn-lg" disabled = {book['is_claimed']} on:click={claimItem(book)}>{book['is_claimed'] ? 'X' : 'Claim'}</button>
+            <button class="btn btn-primary btn-md" disabled = {book['is_claimed']} on:click={deleteBook(book)}>Delete item</button>
             <!--<button class="btn btn-primary" data-bs-target="">Show modal</button>-->
             {#if book.recip_email}
                 <h6>Contact at <span class="lwrcs">{book['recip_email']}</span></h6>

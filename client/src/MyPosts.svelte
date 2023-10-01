@@ -4,10 +4,11 @@
     import {link, push} from 'svelte-spa-router';
     import { onMount } from 'svelte';
     import Card from './Card.svelte';
+    import MyPostsCard from './MyPostsCard.svelte'
     let showLogout = true;
 
     onMount(async () => {
-        const res = await fetch('./myitems');
+        const res = await fetch('./myposts');
         const resp = await res.json();
         booklist = resp;
     });
@@ -33,11 +34,11 @@
 <main>
     <head>
     </head>
-    <h1>My items</h1>
-    <p>Items that I've claimed on Tino Exchange</p>
+    <h1>My Posts</h1>
+    <p>Items that I've posted on Tino Exchange</p>
     <div class="grid">
         {#each booklist as book}
-            <Card book={book} />
+            <MyPostsCard book={book}/>
         {/each}
     </div>
     {#if showLogout == true}

@@ -1,14 +1,13 @@
 <script>
-    //import { push } from "svelte-spa-router";
+    import { push } from "svelte-spa-router";
 
     let title = '';
     let description = '';
     let condition = '';
     let showHint = false;
-    let category = '';
     
 
-    /*function addPost(){
+    function addPost(){
         const post = fetch('./postsquared', {
             method: 'POST',
             body: JSON.stringify({'title': title, 'description': description, 'condition': condition}),
@@ -27,34 +26,27 @@
             }
         }));
     }
-    */
-
 </script>
 
 
 <main>
     <head>
     </head>
-    <form class="post" action="/postsquared" method="post" enctype="multipart/form-data">
+    <div class="post">
         <h1>Create new post</h1>
-        <input type="text" name="title" bind:value={title} placeholder="Item title">
-        <input type="text" name="description" bind:value={description} placeholder="Item description">
-        <select name="condition" bind:value={condition}>
+        <input type="text" bind:value={title} placeholder="Item title">
+        <input type="text" bind:value={description} placeholder="Item description">
+        <input name="postimg" type="file" accept="image/jpeg, image/png, image/jpg">
+        <select bind:value={condition}>
             <option value="GOOD" selected>Good</option>
             <option value="OK">OK</option>
         </select>
-		<input name="postimg" type="file" accept="image/*">
-        <select name="category" bind:value={category}>
-            <option value="PREP BOOK" selected>Prep book</option>
-            <option value="TEXTBOOK">Textbook</option>
-            <option value="OTHER">Other</option>
-        </select>
-        <input class="btn" type="submit">
+        <input id = "submitbtn" class="btn" type="submit" on:click={() => {addPost()}}>
         {#if showHint == true}
         <br>
         <small class="errmess">Please check to make sure that your post has all of the necessary elements!</small>
         {/if}
-    </form>
+    </div>
 </main>
 
 

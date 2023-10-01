@@ -5,6 +5,9 @@ import Home from './Home.svelte'
 import Post from './Post.svelte'
 import MyFeed from './MyFeed.svelte'
 import About from './About.svelte'
+import TestUpload from './TestUpload.svelte'
+import MyPosts from './MyPosts.svelte'
+import { wrap } from 'svelte-spa-router/wrap'
 
 export const routes = {
     "/": Home,
@@ -13,5 +16,7 @@ export const routes = {
     "/feed": Feed,
     "/post": Post,
     "/myitems": MyFeed,
-    "/about": About
+    "/about": About,
+    "/testupload": TestUpload,
+    "/myposts": MyPosts
 }
