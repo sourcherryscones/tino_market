@@ -3,7 +3,7 @@
     let booklist = [];
     import {link, push} from 'svelte-spa-router';
     import { onMount } from 'svelte';
-    import Card from './Card.svelte';
+    import Nav from './Nav.svelte';
     import MyPostsCard from './MyPostsCard.svelte'
     let showLogout = true;
 
@@ -28,21 +28,39 @@
             }
         }))
     }
+
+    function delItemHandler(ebent){
+        let del_id = ebent.id;
+        let tbd = -3;
+        for (let k = 0; k < booklist.length;k++){
+            if (booklist[k]['id'] == del_id){
+                tbd = k;
+                break;
+            }
+        }
+        booklist.splice(tbd,1);
+        booklist=booklist
+        
+    }
 </script>
 
 
 <main>
-    <head>
-    </head>
-    <h1>My Posts</h1>
-    <p>Items that I've posted on Tino Exchange</p>
-    <div class="grid">
-        {#each booklist as book}
-            <MyPostsCard book={book}/>
-        {/each}
+    <Nav/>
+    <div class="container">
+        <head>
+        </head>
+        <h1>My Posts</h1>
+        
+        <p>Items that I've posted on Tino Exchange</p>
+        <div class="grid">
+            {#each booklist as book}
+                <MyPostsCard book={book} on:deleted_item={delItemHandler} />
+            {/each}
+        </div>
+        <h2 role="button" class="outline"><a href="/post" use:link>Post a new item!</a></h2>
     </div>
-    {#if showLogout == true}
-        <button class="outline" on:click = {logout}>Log out</button>
-    {/if}
-    <h2 role="button" class="outline"><a href="/post" use:link>Post a new item!</a></h2>
 </main>
+
+<style>
+</style>

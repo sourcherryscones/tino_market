@@ -1,7 +1,7 @@
 <script>
+  //export let loginprop;
     import {push} from "svelte-spa-router"
-    import Router, { link } from "svelte-spa-router";
-    import { routes } from "./routes.js";
+    import {link} from "svelte-spa-router"
     import {onMount} from 'svelte'
     import { isloggedin } from "./stores.js"
     let isLoggedIn = false;
@@ -11,12 +11,16 @@
       isLoggedIn = val;
     })
 
+    async function getSession(){
+      const res = await fetch('./getsession');
+      const resp = await res.json();
+      console.log("RESP IS")
+      console.log(resp)
+      return resp['login']
+    }
+
     onMount(async () => {
-        const res = await fetch('./getsession');
-        const resp = await res.json();
-        console.log("RESP IS")
-        console.log(resp)
-        loginFlag = resp['login']
+        loginFlag = await getSession()
     });
 
     function logout(){
@@ -45,12 +49,23 @@
       <ul>
         <li><a href="/register" use:link hidden={loginFlag}>Register</a></li>
         <li><a href="/login" use:link hidden={loginFlag}>Log In</a></li>
-        <li><a href="/about" use:link>About</a></li>
         <li><a href="/feed" use:link hidden={!loginFlag}>Feed</a></li>
         <li><a href="/myitems" use:link hidden={!loginFlag}>My Items</a></li>
         <li><a href="/myposts" use:link hidden={!loginFlag}>My Posts</a></li>
-        <li><a href="/feed" use:link hidden={!loginFlag} on:click={logout}>Log Out</li>
+        <li><a href="/about" use:link>About</a></li>
+        <li><a href="/feed" use:link hidden={!loginFlag} on:click={logout}>Log Out</li>        
+        <li><a href="/post" use:link hidden={!loginFlag} role="button">+ Post Item</a></li>
       </ul>
     </nav>
-    <Router {routes}/>
+    <!---->
   </main>
+
+  <style>
+    nav{
+      margin-bottom:20px;
+      margin-top:0px;
+    }
+    ul{
+      margin-top:0px;
+    }
+  </style>

@@ -1,8 +1,9 @@
 <script>
-    import Nav from "./Nav.svelte"
+    import Router, { link } from "svelte-spa-router";
+    import { routes } from "./routes.js";
 </script>
 <main>
-  <Nav/>
+  <Router {routes}/>
 </main>
 <!--
 

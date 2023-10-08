@@ -1,6 +1,7 @@
 <script>
     import { push } from "svelte-spa-router";
     import Card from "./Card.svelte"
+    import Nav from './Nav.svelte'
     import { isloggedin } from "./stores";
     let username = '';
     let password = '';
@@ -40,6 +41,7 @@
 <main class="container">
     <head>
     </head>
+    <Nav/>
     <div class="login">
         
         <h1>Log in!</h1>

@@ -1,6 +1,7 @@
 <script>
     //export let postdict = [];
     let booklist = [];
+    import Nav from './Nav.svelte'
     import {link, push} from 'svelte-spa-router';
     import { onMount } from 'svelte';
     import Card from './Card.svelte';
@@ -39,15 +40,16 @@
 <main>
     <head>
     </head>
-    <a class="rtalign" role="button" href="/#/post">Create new post</a>
-    <div class="grid">
-        {#each booklist as book}
-            <Card book={book} />
-        {/each}
+    <Nav/>
+    <div class="container">
+        <h1>Feed</h1>
+        <a class="rtalign" role="button" href="/#/post">Create new post</a>
+        <div class="grid">
+            {#each booklist as book}
+                <Card book={book} />
+            {/each}
+        </div>
     </div>
-    {#if showLogout == true}
-    <button class="outline" on:click = {logout}>Log out</button>
-    {/if}
 </main>
 
 <style>

@@ -1,6 +1,7 @@
 <script>
-    import { push } from "svelte-spa-router";
-
+    import { push} from "svelte-spa-router";
+    import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
     export let book;
     let modalVisible = false;
 
@@ -49,7 +50,10 @@
                console.log("MOMENT OF TRUTH DID IT GET DELETED?")
                console.log(data['delbooksuccess']);
                if (deleteSuccess){
-                push('/myposts')
+                    dispatch('deleted_item', {
+                        id: bk['id']
+                    })
+                    push('/myposts')
                }
             }));
         });

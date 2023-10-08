@@ -1,6 +1,6 @@
 <script>
     import { push } from "svelte-spa-router";
-
+    import Nav from './Nav.svelte'
     let username = '';
     let grade = 9;
     let email = '';
@@ -43,42 +43,45 @@
 
 
 <main>
-    <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <Nav/>
+    <div class="container">
+        <head>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    </head>
-    {#if hidden==false}
-    <div class="register">
-        <h1>Register</h1>
-        <label>
-            Username:
-            <input type="text" bind:value={username}>
-        </label>
-        <label>
-            Email:
-            <input type="text" bind:value={email}>
-        </label>
-        <label>
-            Grade:
-            <input type="number" bind:value={grade}>
-        </label>
-        <label>
-            Password:
-            <input type="password" bind:value={password}>
-        </label>
-        <label>
-            Confirm password:
-            <input type="password" bind:value={passwordconf}>
-        </label>
-        <input class="btn" type="submit" value="Let's go!" disabled = {!(password === passwordconf && password != '' && grade > 8 && grade < 13 && email.endsWith('fuhsd.org'))} on:click={() => {register()}}>
-        <br>
-        {#if (showHint == true)}
-            <small class="info">{hint}</small>
+            <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        </head>
+        {#if hidden==false}
+        <div class="register">
+            <h1>Register</h1>
+            <label>
+                Username:
+                <input type="text" bind:value={username}>
+            </label>
+            <label>
+                Email:
+                <input type="text" bind:value={email}>
+            </label>
+            <label>
+                Grade:
+                <input type="number" bind:value={grade}>
+            </label>
+            <label>
+                Password:
+                <input type="password" bind:value={password}>
+            </label>
+            <label>
+                Confirm password:
+                <input type="password" bind:value={passwordconf}>
+            </label>
+            <input class="btn" type="submit" value="Let's go!" disabled = {!(password === passwordconf && password != '' && grade > 8 && grade < 13 && email.endsWith('fuhsd.org'))} on:click={() => {register()}}>
+            <br>
+            {#if (showHint == true)}
+                <small class="info">{hint}</small>
+            {/if}
+        </div>
         {/if}
     </div>
-    {/if}
 </main>
 
