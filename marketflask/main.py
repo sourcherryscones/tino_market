@@ -52,9 +52,9 @@ def postsquared():
         yourl = upload['url']
     else:
         if fdata['category'] == 'PREPBOOK':
-            yourl = "../client/public/notebookicon.png"
+            yourl = "/textbookicon.png"
         else:
-            yourl = "../client/public/undrawnotesicon.png"
+            yourl = "/undrawnotesicon.png"
     print("YOURL IS")
     print(yourl)
     print(type(yourl))
