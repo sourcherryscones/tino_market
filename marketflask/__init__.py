@@ -8,6 +8,7 @@ from .sthree import s3_client
 # removed db = SQLAlchemy() and the globals at the top of create_app; wondering if that does anything
 
 def create_app(conf_class=Config):
+    # raise Exception("CREATE APP HAPPENED")
     from .models import User, Post, db
     from .sthree import s3_client
     app = Flask(__name__)
