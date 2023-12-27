@@ -8,8 +8,9 @@
     import { isloggedin } from './stores';
     let showLogout = true;
     let modal;
-
+    let search_input='';
     let dialog;
+    let header = "Feed"
 
     onMount(async () => {
         const res = await fetch('./allposts');
@@ -34,15 +35,52 @@
         }))
     }
 
+    let enter_key_is_down = false;
+
+    function on_key_down(event){
+        if (event.repeat) return;
+
+        switch(event.key){
+            case "Enter":
+            enter_key_is_down = true;
+            event.preventDefault();
+            break;
+        }
+
+        if (enter_key_is_down){
+            searchItem(search_input);
+        }
+
+    }
+
+    function on_key_up(event){
+        switch(event.key){
+            case "Enter":
+            enter_key_is_down = false;
+            event.preventDefault();
+            break;
+        }
+
+    }
+
+    async function searchItem(search_term){
+        console.log("searchItem called!!")
+        const res = await fetch('./search/' + search_term);
+        const resp = await res.json();
+        header = "Search results for " + search_term;
+        booklist = resp;
+    }
+
 </script>
 
-
+<svelte:window on:keydown={on_key_down} on:keyup={on_key_up}/>
 <main>
     <head>
     </head>
     <Nav/>
     <div class="container">
-        <h1>Feed</h1>
+        <input id = "srchbar" type="search" bind:value={search_input} placeholder="Search for an item!">
+        <h1>{header}</h1>
         <a class="rtalign" role="button" href="/#/post">Create new post</a>
         <div class="grid">
             {#each booklist as book}
@@ -57,4 +95,8 @@
     @media only screen and (min-width:600px){ .grid{ grid-template-columns:repeat(1, 1fr); } }
     @media only screen and (min-width:785px){ .grid{ grid-template-columns:repeat(2, 1fr); } }
     @media only screen and (min-width:890px){ .grid{ grid-template-columns:repeat(3, 1fr); } }
+
+    #srchbar{
+        width:30%;
+    }
 </style>

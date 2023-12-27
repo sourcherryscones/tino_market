@@ -11,12 +11,13 @@ def loginpost():
     req = request.json
     username = req['username']
     password = req['password']
-    usr = User.query.filter_by(username=username).first()
+    username_usr = User.query.filter_by(username=username).first()
+    email_usr = User.query.filter_by(email=username).first()
+    usr = username_usr if username_usr else email_usr
     if not usr:
         return jsonify({'success': False, 'error': 'USER NOT FOUND'})
-    print(usr.password)
-    if not usr or not check_password_hash(usr.password, password):
-        return jsonify({'success': False})
+    if not check_password_hash(usr.password, password):
+        return jsonify({'success': False, 'error': 'INCORRECT PASSWORD'})
 
     #do actual checking of pw hash here
     login_user(usr,remember=False)

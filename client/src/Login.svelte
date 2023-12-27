@@ -6,13 +6,37 @@
     let username = '';
     let password = '';
     let showHint = false;
-    let showNotFound = false;
-    //TO BE DELETED
-    let bk = {"title": "The Greatest of Gatsbies", "description": "ALH required reading, pretty good condition", "condition": "GOOD"};
-    let bkarr = [];
-    for (let i=0; i < 10; i++){
-        bkarr.push(bk);
+    let hintValue = '';
+
+    let enter_key_is_down = false;
+
+    function on_key_down(event){
+        if (event.repeat) return;
+
+        switch(event.key){
+            case "Enter":
+            enter_key_is_down = true;
+            event.preventDefault();
+            break;
+        }
+
+        if (enter_key_is_down){
+            userLogin();
+        }
+
     }
+
+    function on_key_up(event){
+        switch(event.key){
+            case "Enter":
+            enter_key_is_down = false;
+            event.preventDefault();
+            break;
+        }
+
+    }
+
+    
     function userLogin(){
         const user = fetch('./login', {
             method: 'POST',
@@ -29,41 +53,46 @@
                 push('/feed');
             } else{
                 if (res['error'] == 'USER NOT FOUND'){
-                    showNotFound = true;
+                    hintValue = "It doesn't look like that account exists; please register to continue!";
+                } else if (res['error'] == 'INCORRECT PASSWORD'){
+                    hintValue = "We don't remember that being your password; please try again!"
+                } else {
+                    hintValue = "Sorry, we couldn't log you in,. Try again?";
                 }
                 showHint=true;
             }
         }));
     }
+
+    
 </script>
 
-
+<svelte:window
+    on:keydown={on_key_down}
+    on:keyup={on_key_up}
+/>
 <main class="container">
     <head>
     </head>
     <Nav/>
     <div class="login">
-        
-        <h1>Log in!</h1>
-        {#if showNotFound == true}
-            <p class="errmess" style="color: #ff5e5e; font-weight: bold;">It doesn't look like that account exists; please <a href="/#/register">sign up</a> to continue!</p>
-        {/if}
-        <label>
-            Username:
-            <input type="text" bind:value={username}>
-        </label>
-        <label>
-            Password:
-            <input type="password" bind:value={password}>
-        </label>
-        <input class="btn" type="submit" value="Let's go!" disabled={!(password && username)} on:click={() => {userLogin()}}>
-        <small>Don't have an account? Sign up <a href="/#/register">here</a>!</small>
-        {#if showHint == true}
-        <br>
-        <small class="errmess">Please check to make sure that your credentials were entered correctly!</small>
-        {/if}
-    </div>
-    
+        <form>
+            <h1>Log in!</h1>
+            {#if showHint == true}
+                <p class="errmess" style="color: #ff5e5e; font-weight: bold;">{hintValue}</p>
+            {/if}
+            <label>
+                Username/email:
+                <input type="text" bind:value={username}>
+            </label>
+            <label>
+                Password:
+                <input id = "pwfield" type="password" bind:value={password}>
+            </label>
+            <input class="btn" type="submit" id = "submitbtn" value="Let's go!" disabled={!(password && username)} on:click={() => {userLogin()}}>
+            <small>Don't have an account? Sign up <a href="/#/register">here</a>!</small>
+        </form>
+    </div>    
         
 </main>
 

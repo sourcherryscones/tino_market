@@ -5,10 +5,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail as sgmail
 import boto3
-
+from sqlalchemy import or_, and_
 from flask_login import login_required, current_user
 from .models import db, Post
 from marketflask import s3_client
+
 
 main = Blueprint('main', __name__)
 
@@ -71,6 +72,21 @@ def postsquared():
     print("RESULT IS ", result.title, result.description)
     return redirect('/#/feed')
 
+@main.route('/search/<sterm>', methods=['GET'])
+def search_item(sterm):
+    relevant_items = Post.query.filter(and_((or_(Post.title.contains(sterm), Post.description.contains(sterm))), (Post.is_claimed == False)))
+    tbr = []
+    for p in relevant_items:
+        dictp = p.asdict()
+        if dictp['is_claimed'] == True:
+            if (current_user.id == p.donor.id):
+                dictp['recip_email'] = p.recip.email
+            if (current_user.id == p.recip.id):
+                dictp['donor_email'] = p.donor.email
+        tbr.append(dictp)
+    #print(tbr)
+    return tbr
+
 
 @main.route('/claim/<int:id>', methods=['PUT'])
 @login_required
@@ -97,7 +113,7 @@ def claimbook(id):
             msg = sgmail(
             from_email='tino.market.messenger@gmail.com',
             to_emails=[p.donor.email, p.recip.email],
-            subject='Transaction complete!',
+            subject='Transaction alert for ' + p.title,
             html_content='<h1>Congratulations, ' + p.donor.username + ' and ' + p.recip.username + '!</h1><p>Your item <strong>'+ p.title +'</strong> has been claimed by ' + p.recip.username + ', who has been copied on this email so that you two can figure out meeting times!</p>'
             )
             try:
