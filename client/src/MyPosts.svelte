@@ -3,14 +3,20 @@
     let booklist = [];
     import {link, push} from 'svelte-spa-router';
     import { onMount } from 'svelte';
+    import {isloggedin} from './stores'
     import Nav from './Nav.svelte';
     import MyPostsCard from './MyPostsCard.svelte'
     let showLogout = true;
+    let liflag;
 
     onMount(async () => {
-        const res = await fetch('./myposts');
+        isloggedin.subscribe((val) => liflag=val);
+        if (!liflag){
+            push('/login')
+        }
+        const res = await fetch('./allposts');
         const resp = await res.json();
-        booklist = resp;
+        booklist = resp.reverse();
     });
 
     function logout(){

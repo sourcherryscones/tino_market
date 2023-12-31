@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail as sgmail
 import boto3
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, and_, func
 from flask_login import login_required, current_user
 from .models import db, Post
 from marketflask import s3_client
@@ -63,7 +63,7 @@ def postsquared():
     #update the db model thing
     
     print(fdata)
-    postified = Post(title=fdata['title'],description=fdata['description'], posted_by=current_user.id, is_claimed=False, condition=fdata['condition'], image=yourl, category=fdata['category'])
+    postified = Post(title=fdata['title'].lower(),description=fdata['description'], posted_by=current_user.id, is_claimed=False, condition=fdata['condition'], image=yourl, category=fdata['category'])
     db.session.add(postified)
     db.session.flush()
     db.session.commit()
@@ -74,6 +74,7 @@ def postsquared():
 
 @main.route('/search/<sterm>', methods=['GET'])
 def search_item(sterm):
+    sterm = sterm.lower()
     relevant_items = Post.query.filter(and_((or_(Post.title.contains(sterm), Post.description.contains(sterm))), (Post.is_claimed == False)))
     tbr = []
     for p in relevant_items:

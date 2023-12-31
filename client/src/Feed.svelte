@@ -7,12 +7,17 @@
     import Card from './Card.svelte';
     import { isloggedin } from './stores';
     let showLogout = true;
+    let liflag;
     let modal;
     let search_input='';
     let dialog;
     let header = "Feed"
 
     onMount(async () => {
+        isloggedin.subscribe((val) => liflag=val);
+        if (!liflag){
+            push('/login')
+        }
         const res = await fetch('./allposts');
         const resp = await res.json();
         booklist = resp.reverse();
