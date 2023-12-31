@@ -15,7 +15,7 @@
         console.log("button clicked!")
         console.log("is the email from fuhsd??")
         console.log(email.endsWith('fuhsd.org'))
-        const reg = fetch('./signup', {
+        const reg = fetch('./reg', {
             method:'POST',
             body: JSON.stringify({'username': username, 'email': email,'password': password, 'pwconf': passwordconf, 'grade': grade}),
             headers: {
@@ -28,7 +28,7 @@
                 grade = 0;
                 password = '';
                 passwordconf = '';
-                push('/login');
+                push('/verify/'+email+'/newuser');
             } else {
                 showHint = true;
                 if (res['error'] == 'USER ALREADY EXISTS'){

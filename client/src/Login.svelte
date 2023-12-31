@@ -90,7 +90,7 @@
                 <input id = "pwfield" type="password" bind:value={password}>
             </label>
             <input class="btn" type="submit" id = "submitbtn" value="Let's go!" disabled={!(password && username)} on:click={() => {userLogin()}}>
-            <small>Don't have an account? Sign up <a href="/#/register">here</a>!</small>
+            <small>Forgot your password? Reset it <a href="/#/forgot">here</a>!</small>
         </form>
     </div>    
         

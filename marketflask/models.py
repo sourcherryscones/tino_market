@@ -15,9 +15,11 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
     grade = db.Column(db.Integer)
+    is_verified=db.Column(db.Boolean, nullable=False)
+    verification_code=db.Column(db.Integer)
 
     def asdict(self):
-        return {'id': self.id, 'username': self.username, 'email': self.email, 'grade': self.grade}
+        return {'id': self.id, 'username': self.username, 'email': self.email, 'grade': self.grade, 'is_verified': self.is_verified, 'verification_code': self.verification_code}
 
 
 
