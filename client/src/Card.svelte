@@ -11,12 +11,9 @@
     }
 
     function claimItem(bk){
-        console.log("CLAIM ITEM S GETTING CALLEDDDD");
-        console.log(bk);
-        console.log('the id of this item is ' + bk['id']);
-        const resp = fetch('./claim/' + bk['id'], {
+        const resp = fetch('./interested/' + bk['id'], {
             method: 'PUT',
-            body: JSON.stringify(bk),
+            body: JSON.stringify({}),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -37,7 +34,8 @@
     <div class="card">
         <div class="card-body text-center py-2" style="background-color:#dddddd;">
             <p class="card-text" style="background-color:#dddddd; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-weight: 300">{book['category']}</p>
-          </div>
+            <h1>{book['id']}</h1>
+        </div>
         <img src={book['image']} align="center" class="card-img-top" style="border-radius:0px;" alt="book"/>
         <div class="card-body">
             <h5 class="card-title">{book['title']}</h5>

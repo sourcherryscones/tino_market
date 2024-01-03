@@ -38,6 +38,7 @@
     //export let description = 'basically exactly what it sounds like lmfao';
 
     function deleteBook(bk){
+        console.log(bk['id'] + " is the id of the book getting deleted, it's called " + bk['title'])
         const resp = fetch('./delete/' + bk['id'], {
             method: 'DELETE',
             body: JSON.stringify(bk),
@@ -50,10 +51,11 @@
                console.log("MOMENT OF TRUTH DID IT GET DELETED?")
                console.log(data['delbooksuccess']);
                if (deleteSuccess){
+                    console.log("dispatching event!")
                     dispatch('deleted_item', {
                         id: bk['id']
                     })
-                    push('/myposts')
+                    
                }
             }));
         });
@@ -63,7 +65,8 @@
     <div class="card">
         <div class="card-body text-center py-2" style="background-color:#dddddd;">
             <p class="card-text" style="background-color:#dddddd; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-weight: 300">{book['category']}</p>
-          </div>
+            <h1>{book['id']}</h1>
+        </div>
         <img src={book['image']} align="center" class="card-img-top" style="border-radius:0px;" alt="book"/>
         <div class="card-body">
             <h5 class="card-title">{book['title']}</h5>

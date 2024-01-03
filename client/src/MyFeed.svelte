@@ -9,12 +9,18 @@
     let showLogout = true;
     let liflag;
 
+    async function getSession(){
+      const res = await fetch('./getsession');
+      const resp = await res.json();
+      console.log("RESP IS")
+      console.log(resp)
+      return resp['login']
+    }
+
     onMount(async () => {
-        isloggedin.subscribe((val) => liflag=val);
-        if (!liflag){
-            push('/login')
-        }
-        const res = await fetch('./allposts');
+        liflag = await getSession()
+        console.log(liflag)
+        const res = await fetch('./myitems');
         const resp = await res.json();
         booklist = resp.reverse();
     });

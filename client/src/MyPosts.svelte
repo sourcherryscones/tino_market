@@ -9,14 +9,22 @@
     let showLogout = true;
     let liflag;
 
+    async function getSession(){
+      const res = await fetch('./getsession');
+      const resp = await res.json();
+      console.log("RESP IS")
+      console.log(resp)
+      return resp['login']
+    }
+
     onMount(async () => {
-        isloggedin.subscribe((val) => liflag=val);
-        if (!liflag){
-            push('/login')
-        }
-        const res = await fetch('./allposts');
+        liflag = await getSession()
+        console.log(liflag)
+        const res = await fetch('./myposts');
         const resp = await res.json();
         booklist = resp.reverse();
+        console.log("ON MOUNT, ELEMENTS ARE");
+        console.log(booklist)
     });
 
     function logout(){
@@ -36,16 +44,19 @@
     }
 
     function delItemHandler(ebent){
-        let del_id = ebent.id;
+        let del_id = ebent.detail['id']
         let tbd = -3;
         for (let k = 0; k < booklist.length;k++){
             if (booklist[k]['id'] == del_id){
+                console.log("K WAS "+k);
                 tbd = k;
                 break;
             }
         }
-        booklist.splice(tbd,1);
+        
+        if (tbd > -1) booklist.splice(tbd,1);
         booklist=booklist
+        push('/myposts')
         
     }
 </script>

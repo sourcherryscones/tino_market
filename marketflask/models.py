@@ -24,30 +24,23 @@ class User(UserMixin, db.Model):
 
 
 # Post model
-
+ 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(300))
-    posted_by = db.Column(db.Integer, db.ForeignKey(User.id)) # db.ForeignKey(users.id)
+    posted_by = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False) # db.ForeignKey(users.id)
     date_posted = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    recipient_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    status = db.Column(db.String(20), nullable=False, server_default="AVAILABLE")
     is_claimed = db.Column(db.Boolean, nullable=False)
     condition = db.Column(db.String(4), nullable=False)
     image = db.Column(db.String(100))
     category = db.Column(db.String(30))
 
     donor = relationship('User', foreign_keys='Post.posted_by')
-    recip = relationship('User', foreign_keys='Post.recipient_id')
-    
-
 
     def asdict(self):
-        base = {'id': self.id, 'title': self.title, 'description': self.description, 'posted_by': self.posted_by, 'date_posted': str(self.date_posted), 'recipient_id': self.recipient_id, 'is_claimed': self.is_claimed, 'condition': self.condition, 'image': self.image, 'category': self.category}
-        if (self.donor != None):
-            base['donor'] = self.donor.username
-        if (self.recip != None):
-            base['recip'] = self.recip.username
+        base = {'id': self.id, 'title': self.title, 'description': self.description, 'posted_by': self.posted_by, 'date_posted': str(self.date_posted), 'is_claimed': self.is_claimed, 'condition': self.condition, 'image': self.image, 'category': self.category}
         return base
 
     def addmultiple():
@@ -75,3 +68,14 @@ class Post(db.Model):
             bdict = Post(title=b['title'],description=b['description'], posted_by=0, recipient_id=1, is_claimed=b['is_claimed'], condition=b['condition'])
             db.session.add(bdict)
         db.session.commit()
+
+
+class Interested(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey(Post.id))
+    user_id= db.Column(db.Integer, db.ForeignKey(User.id))
+    timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    
+
+    pid = relationship('Post', foreign_keys='Interested.post_id')
+    uid = relationship('User', foreign_keys='Interested.user_id')

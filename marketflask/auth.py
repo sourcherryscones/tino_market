@@ -54,6 +54,8 @@ def signup():
 
 @auth.route("/getsession")
 def check_session():
+    print("USER AUTHENTICATED? ")
+    print(current_user.is_authenticated)
     if current_user.is_authenticated:
         return jsonify({"login": True})
 
